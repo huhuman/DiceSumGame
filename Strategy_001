@@ -1,0 +1,26 @@
+int Strategy(unsigned long long gameState, int diceValue) {
+	std::bitset<24> game(gameState);
+	bool digit = false, ten = false;
+	for (int i = 4; i < 8; i++) {
+		if ((game[i * 3] + game[i * 3 + 1] + game[i * 3 + 2]) == 0) {
+			digit = true;
+			break;
+		}
+	}
+	for (int i = 0; i < 4; i++) {
+		if ((game[i * 3] + game[i * 3 + 1] + game[i * 3 + 2]) == 0) {
+			ten = true;
+			break;
+		}
+	}
+	if (!digit) {
+		return 2;
+	}
+	if (!ten) {
+		return 1;
+	}
+	if (diceValue > 4) {
+		return 1;
+	}
+	return 2;
+}
