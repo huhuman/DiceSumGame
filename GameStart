@@ -1,0 +1,51 @@
+#include<ctime>
+#include<iostream>
+#include<cstdlib>
+#include<bitset>
+
+int Strategy(unsigned long long gameState, int diceValue);
+int DiceSumGame();
+
+void GameStart() {
+	int testNum = 10000;
+	double Score = 0;
+	std::srand(std::time(NULL));
+	for (int i = 1; i <= testNum; i++) {
+		Score += DiceSumGame();
+	}
+	std::cout << Score / 10000 << "\n";
+}
+
+int DiceSumGame() {
+	int target = 150, total = 0;
+	std::bitset<24> GameState(0);
+	int tenPos = 4, digitPos = 4;
+	for (int i = 1; i <= 8; i++) {
+		int diceValue = std::rand() % 6 + 1;
+		int nextPos = Strategy(GameState.to_ullong(), diceValue);
+		if (nextPos == 1 && digitPos > 0) {
+			total += diceValue;
+			std::bitset<3> temp(diceValue);
+			for (int j = 0; j < 3; j++) {
+				GameState[j + 24 - digitPos * 3] = temp[j];
+			}
+			digitPos--;
+		}
+		else if (nextPos == 2 && tenPos > 0) {
+			total += 10 * diceValue;
+			std::bitset<3> temp(diceValue);
+			for (int j = 0; j < 3; j++) {
+				GameState[j + (4 - tenPos) * 3] = temp[j];
+			}
+			tenPos--;
+		}
+		else {
+			return 0;
+		}
+		if (total > target) {
+			return 0;
+		}
+	}
+
+	return total;
+}
