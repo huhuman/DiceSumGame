@@ -1,0 +1,9 @@
+#include<iostream>
+#include<bitset>
+
+void GameStart();
+
+int main() {
+	GameStart();
+	return 0;
+}
